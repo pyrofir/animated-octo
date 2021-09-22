@@ -41,7 +41,7 @@ function collisions()
 
 function bullet_collision()
 {
-    //collision between bullet and walls
+    //collision between bullet and walls and ennemies
     for (var i = 0; i < player1.bullets.length; i++)
     {
         if (Math.abs(player1.bullets[i].position.x) >= WIDTH / 2 ||
@@ -51,7 +51,26 @@ function bullet_collision()
             player1.bullets.splice(i, 1);
             i--;
         }
+/*
+        else
+        {
+            for (var j = 0; j < ennemies.length; j++)
+            {
+                ennemies[j]
+                if (Math.abs(player1.bullets[i].grapgic.position.x) == Math.abs(ennemies[j].grapgic.position.x) &&
+                Math.abs(player1.bullets[i].position.y) == Math.abs(ennemies[j].grapgic.position.x))
+                {
+                    scene.remove(player1.bullets[i]);
+                    player1.bullets.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+*/
     }
+
+
 
 }
 
@@ -61,8 +80,12 @@ function player_collision()
     var x = player1.graphic.position.x + WIDTH / 2;
     var y = player1.graphic.position.y + HEIGHT / 2;
 
+
+    if ( x < 0 )
+        player1.graphic.position.x -= x;
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
+    
     if ( y < 0 )
         player1.graphic.position.y -= y;
     if ( y > HEIGHT )
@@ -82,18 +105,18 @@ function player_falling()
 
     for (var i = 0; i < length; i++) {
         element = noGround[i];
-
-        var tileX = (element[0]) | 0;
-        var tileY = (element[1]) | 0;
-        var mtileX = (element[0] + sizeOfTileX) | 0;
-        var mtileY = (element[1] + sizeOfTileY) | 0;
-
+            var tileX = (element && (element[0])) | 0;
+            var tileY = (element && (element[1])) | 0;
+            var mtileX = (element && (element[0] + sizeOfTileX)) | 0;
+            var mtileY = (element && (element[1] + sizeOfTileY)) | 0;
         if ((x > tileX)
             && (x < mtileX)
             && (y > tileY) 
             && (y < mtileY))
         {
-           player1.dead();
+            player1.life = player1.life - 1;
+            if (player1.life == 0)
+                player1.dead();
         }
     }
 
